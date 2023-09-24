@@ -1,0 +1,5 @@
+#!/bin/bash
+source /sps/ilm/allouche/Softwares/shell/tensorFlowEnv
+SCRIPT=$(readlink -f $0)
+export  myDIR=`dirname $SCRIPT`
+python $myDIR/buildSelectedData.py
