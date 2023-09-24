@@ -28,9 +28,9 @@ This repository provides several script (python + bash) to reduce the database o
 ## Build the reduced data
 To reduce the database, you have to run, in this order :
 ```
-buildGh5.py
-Clustering.py
-buildSelectedData.py
+python buildGh5.py
+python Clustering.py
+python buildSelectedData.py
 ```
 As an example, see xAllKMeans, xAllDBSCAN and xALLHDBSCAN in testH2O folder 
 
