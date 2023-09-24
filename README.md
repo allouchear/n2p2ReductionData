@@ -21,10 +21,9 @@ This repository provides several script (python + bash) to reduce the database o
 
 ## buildSelectedData.py
  build a selInput.data file using input.data (the database for nnp-train) and  numStructs.csv
- 
- Input  file : input.data (default), required. You can used --infile=otherfile to change the name of input file \
- Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile \
- Outut  file : selInput.data (default). You can use --outfile=otherfile to change the name of output file
+ - Input  file : input.data (default), required. You can used --infile=otherfile to change the name of input file
+ - Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile
+ - Outut  file : selInput.data (default). You can use --outfile=otherfile to change the name of output file
 
 ## Build the reduced data
 To reduce the database, you have to run, in this order :
