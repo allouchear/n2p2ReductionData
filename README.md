@@ -16,7 +16,7 @@ This repository provides several script (python + bash) to reduce the database o
  - Outut  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
  - The default clustering approach is KMeans. You can change it using --method=DBSCAN or --method=HDBSCAN
  - The default minsample hperparameter is 2. You can change it by --minsample=OtherValue
- - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Note for DBSCAN and HDBSCAN, all outliers structures are selected.
+ - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Please note that for DBSCAN and HDBSCAN, all outliers structures are selected.
  - The optimal value of eps hyperparameter of DBSCAN is computed using NearestNeighbors+Knee method. You can change it using --eps=FixedPositiveValue
 
 ## buildSelectedData.py
