@@ -6,9 +6,9 @@ n2p2ReductionData - some scripts to reduce structure database using clustering a
 This repository provides several script (python + bash) to reduce the database of structures used to train NN network potential with n2p2 package.
 
 ## buildGh5.py
- build a .h5 file using function.data contenning G function produced by nnp-scaling program of n2p2\
- Input  file : function.data (default), required. You can used --infile=otherfile to change the name of input file\
- Output file : functions.h5 (default). You can change the name using --outfile=otherfile to change the name of output file\
+ build a .h5 file using function.data contenning G function produced by nnp-scaling program of n2p2 \
+ Input  file : function.data (default), required. You can used --infile=otherfile to change the name of input file \
+ Output file : functions.h5 (default). You can change the name using --outfile=otherfile to change the name of output file \
 
 ## Clustering.py
  Search list of selected structures based on KMeans, DBSCAN or HDBSCAN clustering methods
