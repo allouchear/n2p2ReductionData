@@ -28,7 +28,7 @@ This repository provides several script (python + bash) to reduce the database o
 ## Build the reduced data
 To reduce the database, you have to run, in this order :
 ```
-buiildGh5.py
+buildGh5.py
 Clustering.py
 buildSelectedData.py
 ```
