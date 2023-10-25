@@ -18,13 +18,14 @@ This repository provides several script (python + bash) to reduce the database o
  - The default minsample hperparameter is 2. You can change it by --minsample=OtherValue
  - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Please note that for DBSCAN and HDBSCAN, all outliers structures are selected.
  - The optimal value of eps hyperparameter of DBSCAN is computed using NearestNeighbors+Knee method. You can change it using --eps=FixedPositiveValue
+   
 ## SelectionOnGrid.py
  Search list of selected structures based on G values on grid.
  - Input  file : functions.h5 (default), required. You can used --infile=otherfile to change the name of input file
  - Outut  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
  - The default method to make a reduction of dimensions is PCA. You can change it using --method=TSNE or --method=None (without reduction)
- - By default no scaling on G. You can change it by --scaling=Standard, --scaling=MinMax, --scaling=AbsMax, --scaling=None (default)
- - The numberd of reduced simension is 1. TO change it use, --k=value, k = number of reduced dimension for TSNE(from 1 to 3) or PCA. For PCA, k can be a real between 0 and 1.0"
+ - By default no scaling on G. You can change it by --scaling=Standard, --scaling=MinMax, --scaling=AbsMax, or --scaling=None (default)
+ -The number of dimensions after reduction is 1. To change it, use --k=value, where value represents the number of dimensions for t-SNE (from 1 to 3) or PCA. For PCA, k can be a real number between 0 and 1.0. In this case, the number of dimensions is computed automatically based on the amount of variance that needs to be explained, which is greater than the percentage specified by n_components (see scikit-learn documentation)
  - The percentage used to select number of grid points is set to 0.20%. To change it : --p=newValue.  the number of grid points m = int((number of dataset/100*percentage)**(1.0/n_components). If p<0 : m=int(-p) for each direction
 
 ## buildSelectedData.py
