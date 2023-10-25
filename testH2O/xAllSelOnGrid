@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# needed only if you change input.data or input.nn 
+#./xscal
+#../src/xbuildGh5
+
+# You can run it many times. See xClustering to change clusters number
+rm numStructs.csv
+time ../src/xSelectionOnGrid
+# build new input.data file, named selInput.data
+rm selInput.data
+../src/xbuildSelectedData
