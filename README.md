@@ -50,10 +50,18 @@ This repository provides several script (python + bash) to reduce the database o
  - 40 is the default value of leaf_size. To change it, --leaf_size=otherinteger (see KernelDensity documentation in scikit-learn)
 
 ## buildListFromClustersFile.py
- build a numStructs.csv using clusters.data produced by Clustering.py. 
- - Input  file : Clustering.py (default), required. You can used --infile=otherfile to change the name of input file
+ build a numStructs.csv using clusters.csv produced by Clustering.py. 
+ - Input  file : clusters.csv (default), required. You can used --infile=otherfile to change the name of input file
  - Outut  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
  - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue
+ - The seed=111 by default. You can change it by : --seed=OtherInteger
+
+## SelectionByKDE.py
+build a numStructs.csv using  resultsKDE.csv produced by KDE.py. 
+ - Input  file : resultsKDE.csv (default), required. You can used --infile=otherfile to change the name of input file
+ - Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile
+ - The selection method can be  Regular, Logarithmic, Smallest KDE. Use --method=yourmethod to set it
+ - The percentage of selected structures by cluster is set to 10.0%. To change it : --p=newValue
  - The seed=111 by default. You can change it by : --seed=OtherInteger
 
 ## buildSelectedData.py
@@ -61,6 +69,8 @@ This repository provides several script (python + bash) to reduce the database o
  - Input  file : input.data (default), required. You can used --infile=otherfile to change the name of input file
  - Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile
  - Outut  file : selInput.data (default). You can use --outfile=otherfile to change the name of output file
+
+
    
 ## Build the reduced data
 To reduce the database, you have to run, in this order :
