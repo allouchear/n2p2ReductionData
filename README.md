@@ -22,8 +22,9 @@ This repository provides several script (python + bash) to reduce the database o
  - By default no reduction of dimension. If needed, add: --reddim=PCA
  - To define the dimension after reduction, set kr. --kr=integer or a real real between 0 and 1.0 (see scikitlearn documentaion for PCA)
  - By defeault the data are not scaled. To do it, use : --scaling=MinMax, Standard or MaxAbs
- - By default all data (rows) are used. To reduce data, use --reddata=MaxG or --reddata=StdG. In this case, We search the G column with max (MaxG or StdG) value. The data are sorted using this column and the data are reduced to kdeddat, taking rows with linear step.
- - Set the data size using --kreddata=integervaluer
+ - By default all data (rows) are used. To reduce data, use --reddata=MaxG or --reddata=StdG. In this case, We search the G column with max (MaxG or StdG) value. The data are sorted using this column and the data are reduced to kdeddat, taking rows with linear step
+ - Set the data size using --kreddata=integervalue
+ - The seed=111 by default. You can change it by : --seed=OtherInteger
    
 ## SelectionOnGrid.py
  Search list of selected structures based on G values on grid.
@@ -33,6 +34,20 @@ This repository provides several script (python + bash) to reduce the database o
  - By default no scaling on G. You can change it by --scaling=Standard, --scaling=MinMax, --scaling=AbsMax, or --scaling=None (default)
  - The number of dimensions after reduction is 1. To change it, use --k=value, where value represents the number of dimensions for t-SNE (from 1 to 3) or PCA. For PCA, k can be a real number between 0 and 1.0. In this case, the number of dimensions is computed automatically based on the amount of variance that needs to be explained, which is greater than the percentage specified by n_components (see scikit-learn documentation)
  - The percentage used to select number of grid points is set to 0.20%. To change it : --p=newValue.  the number of grid points m = int((number of dataset/100*percentage)**(1.0/n_components). If p<0 : m=int(-p) for each direction
+
+## KDE.py
+ Compute KDE for each structure of the database
+ - Input  file (required) : functions.h5 (default), required. You can used ---databasefile=otherfile to change the name of input file. The data of this file are used to fit KDE.
+ - Second input file (optional) : None (default), not required. Change it using : --descfile=othername h5 file. Using G from this file, we compute KDE for structures given in this same file. If None, we compute KDE for structures given in databasefile input file. 
+ - By default we search max KDE using data in databasefile. If not, we used those given in maxfile : --maxfile=namecontainingmaxKDE
+ - Outut  file : resultsKDE.csv (default). You can used --outfile=otherfile to change the name of output file
+ -  By default no reduction of dimension. If needed, add: --reddim=PCA
+ - To define the dimension after reduction, set kr. --kr=integer or a real real between 0 and 1.0 (see scikitlearn documentaion for PCA)
+ - By defeault the data are not scaled. To do it, use : --scaling=MinMax, Standard or MaxAbs
+ - The seed=111 by default. You can change it by : --seed=OtherInteger
+ - scott is the default method for bandwidth in KDE. You can change it using --bw=othermethod (see KernelDensity documentation in scikit-learn)
+ - 0 is the default value for rtol. To change it, use --rtol=otherpositivevalue  (see KernelDensity documentation in scikit-learn)
+ - 40 is the default value of leaf_size. To change it, --leaf_size=otherinteger (see KernelDensity documentation in scikit-learn)
 
 ## buildListFromClustersFile.py
  build a numStructs.csv using clusters.data produced by Clustering.py. 
