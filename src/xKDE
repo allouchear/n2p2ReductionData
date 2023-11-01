@@ -1,0 +1,18 @@
+#!/bin/bash
+source /home/theochem/allouche/shell/tensorFlowEnv
+SCRIPT=$(readlink -f $0)
+export  myDIR=`dirname $SCRIPT`
+#python $myDIR/KDE.py --bw=0.1 --scaling=None
+#python $myDIR/KDE.py --reddim=PCA --k=0.95 --scaling=None --bw=scott
+#python $myDIR/KDE.py --reddim=PCA --k=0.99 --scaling=None --bw=scott
+python $myDIR/KDE.py $@
+
+#
+#	parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
+#	parser.add_argument("--infile", type=str, default="functions.h5", help="G functions from h5 file, see buildGh5.py")
+#	parser.add_argument("--outfile", type=str, default="results.txt", help="output file : results")
+#	parser.add_argument("--reddim", type=str, default="None", help="method : None or PCA")
+#	parser.add_argument("--k", type=float, default=1, help=" k = number of reduced dimension for TSNE(from 1 to 3) or PCA. For PCA, k can be a real between 0 and 1.0")
+#	parser.add_argument("--scaling", type=str, default="None", help="scaling : None, MinMax, Standard or MaxAbs")
+#	parser.add_argument("--seed", type=int, default=111, help=" seed, default 111. If <0 => random_state=None")
+#	parser.add_argument("--bw", type=str, default='scott', help="band-width for KDE. scott,silverman, if not, use at it ")

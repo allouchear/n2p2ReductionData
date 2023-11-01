@@ -1,0 +1,8 @@
+#!/bin/bash
+source /home/theochem/allouche/shell/tensorFlowEnv
+SCRIPT=$(readlink -f $0)
+export  myDIR=`dirname $SCRIPT`
+#python $myDIR/Clustering.py
+#python $myDIR/Clustering.py --k=5 --p=0.3 --seed=1
+#python $myDIR/Clustering.py --method=DBSCAN --eps=0.01 --seed=1 --minsample=2
+python $myDIR/Clustering.py --method=HDBSCAN --eps=0.01 --seed=1 --minsample=2

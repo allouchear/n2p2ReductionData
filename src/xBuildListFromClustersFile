@@ -2,4 +2,4 @@
 source /home/theochem/allouche/shell/tensorFlowEnv
 SCRIPT=$(readlink -f $0)
 export  myDIR=`dirname $SCRIPT`
-python $myDIR/buildSelectedData.py $@
+python $myDIR/buildListFromClustersFile.py $@

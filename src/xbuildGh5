@@ -1,5 +1,5 @@
 #!/bin/bash
-source /sps/ilm/allouche/Softwares/shell/tensorFlowEnv
+source /home/theochem/allouche/shell/tensorFlowEnv
 SCRIPT=$(readlink -f $0)
 export  myDIR=`dirname $SCRIPT`
 python $myDIR/buildGh5.py
