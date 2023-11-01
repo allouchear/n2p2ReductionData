@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /home/allouche/Softwares/n2p2-master/env.sh
+source /home/theochem/allouche/Softwares/n2p2-master/env.sh
 nnp-scaling 2
 rm sf*
 rm neighbors.histo  nnp-scaling.log.*

@@ -5,6 +5,6 @@
 ../src/xbuildGh5
 
 # You can run it many times. See xClustering to change clusters number
-../src/xClusteringKMeans
+../src/xClusteringKMeans --k=10 --p=0.3 --seed=1 --reddim=PCA --kr=0.999 --scaling=None
 # build new input.data file, named selInput.data
 ../src/xbuildSelectedData

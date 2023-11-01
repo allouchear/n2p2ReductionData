@@ -5,6 +5,15 @@
 ../src/xbuildGh5
 
 # You can run it many times. See xClustering to change clusters number
-../src/xClusteringDBSCAN
+#../src/xClusteringDBSCAN --method=DBSCAN --seed=1 --minsample=2 --p=2.0 --eps=-1.0
+
+ ../src/xClusteringDBSCAN --method=DBSCAN --seed=1 --minsample=2 --p=2.0 --eps=-1.0 --reddim=PCA --kr=0.999 --scaling=None --outfile=numStructs.csv --outclustersfile=clusters.csv
 # build new input.data file, named selInput.data
-../src/xbuildSelectedData
+../src/xbuildSelectedData --numfile=numStructs.csv --outfile=selInput.data
+
+# make others selections whitout rerun DBSCAN
+../src/xBuildListFromClustersFile --p=1.0  --infile=clusters.csv --outfile=numStructsp1.csv --seed=1
+../src/xbuildSelectedData --numfile=numStructsp1.csv --outfile=selInputp1.data 
+
+../src/xBuildListFromClustersFile --p=3.0  --infile=clusters.csv --outfile=numStructsp3.csv --seed=1
+../src/xbuildSelectedData --numfile=numStructsp3.csv --outfile=selInputp3.data 

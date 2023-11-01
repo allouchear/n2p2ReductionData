@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# needed only if you change input.data or input.nn 
+
+../src/xBuildListFromClustersFile --p=0.3  --infile=clusters.csv --outfile=numStructs.csv --seed=1
+# build new input.data file, named selInput.data
+#../src/xbuildSelectedData

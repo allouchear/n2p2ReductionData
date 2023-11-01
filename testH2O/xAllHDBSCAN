@@ -5,6 +5,6 @@
 ../src/xbuildGh5
 
 # You can run it many times. See xClustering to change clusters number
-../src/xClusteringHDBSCAN
+../src/xClusteringHDBSCAN  --method=HDBSCAN --eps=1e-3 --seed=1 --minsample=2 --p=2.0 --reddim=PCA --kr=0.999 --scaling=MinMax
 # build new input.data file, named selInput.data
 ../src/xbuildSelectedData

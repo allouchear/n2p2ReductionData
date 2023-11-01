@@ -1,0 +1,24 @@
+#!/bin/bash
+
+export OMP_NUM_THREADS=$1
+
+# needed only if you change input.data or input.nn 
+#./xscal
+#../src/xbuildGh5
+
+# You can run it many times. See xClustering to change clusters number
+#../src/xKDE  --bw=0.1 --scaling=None
+#../src/xKDE  --reddim=PCA --k=0.95 --scaling=None --bw=scott
+#../src/xKDE  --reddim=PCA --k=0.99 --scaling=None --bw=scott
+#../src/xKDE --reddim=PCA --k=0.999 --scaling=None --bw=silverman
+#../src/xKDE --reddim=PCA --k=0.99 --scaling=Standard --bw=silverman
+#../src/xKDE --reddim=PCA --k=0.999 --scaling=MinMax --bw=silverman
+#../src/xKDE --reddim=PCA --k=0.999 --scaling=None --bw=silverman
+#../src/xKDE --reddim=None --k=0.999 --scaling=None --bw=silverman --rtol=1e-3 --leaf_size=40
+../src/xKDE --reddim=None --k=0.99 --scaling=MinMax --bw=silverman --rtol=0 --leaf_size=40
+#../src/xKDE --reddim=PCA --k=0.99 --scaling=MinMax --bw=silverman --maxfile=maxKDE.csv
+#../src/xKDE --reddim=PCA --k=0.99 --scaling=MinMax --bw=silverman --rtol=0 --leaf_size=40
+#../src/xKDE --reddim=PCA --k=0.99 --scaling=MinMax --bw=silverman --rtol=1e-3 --leaf_size=10
+#../src/xKDE --reddim=None --scaling=None --bw=silverman
+# build new input.data file, named selInput.data
+#../src/xbuildSelectedData
