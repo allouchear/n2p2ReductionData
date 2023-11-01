@@ -1,0 +1,14 @@
+#!/bin/bash
+
+../src/xKDE --reddim=PCA --k=0.99 --scaling=MinMax --bw=silverman
+
+# method : Regular, Logarithmic, Smallest
+# resultsKDE.csv needed
+../src/xSelectionByKDE --p=20.0 --method=Logaritmic --infile=resultsKDE.csv --outfile=numStructs.csv
+../src/xbuildSelectedData --numfile=numStructs.csv --outfile=selInputLogaritmic.data
+
+../src/xSelectionByKDE --p=20.0 --method=Regular --infile=resultsKDE.csv --outfile=numStructs.csv
+../src/xbuildSelectedData --numfile=numStructs.csv --outfile=selInputRegular.data
+
+../src/xSelectionByKDE --p=20.0 --method=Smallest --infile=resultsKDE.csv --outfile=numStructs.csv
+../src/xbuildSelectedData --numfile=numStructs.csv --outfile=selInputSmallest.data
