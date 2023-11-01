@@ -77,10 +77,23 @@ To reduce the database, you have to run, in this order :
 ```
 python buildGh5.py
 python Clustering.py
-# or python SelectionOnGrid.py
+#  and probably buildListFromClustersFile.py
 python buildSelectedData.py
 ```
-As an example, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid and xALLHDBSCAN in testH2O folder 
+Or
+```
+python buildGh5.py
+python SelectionOnGrid.py
+python buildSelectedData.py
+```
+Or
+```
+python buildGh5.py
+python KDE.py
+SelectionByKDE.py
+python buildSelectedData.py
+```
+As an example, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid and xAllHDBSCAN in testH2O folder 
 
 # Authors
  - Abdulrahman Allouche (Lyon 1 University)
