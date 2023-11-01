@@ -70,7 +70,6 @@ build a numStructs.csv using  resultsKDE.csv produced by KDE.py.
  - Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile
  - Outut  file : selInput.data (default). You can use --outfile=otherfile to change the name of output file
 
-
    
 ## Build the reduced data
 To reduce the database, you have to run, in this order :
@@ -93,7 +92,7 @@ python KDE.py
 python SelectionByKDE.py
 python buildSelectedData.py
 ```
-As an example, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid, xAllKDE and xAllHDBSCAN in testH2O folder 
+As examples, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid, xAllKDE and xAllHDBSCAN in testH2O folder 
 
 # Authors
  - Abdulrahman Allouche (Lyon 1 University)
