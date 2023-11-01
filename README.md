@@ -93,7 +93,7 @@ python KDE.py
 SelectionByKDE.py
 python buildSelectedData.py
 ```
-As an example, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid and xAllHDBSCAN in testH2O folder 
+As an example, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid, xAllKDE and xAllHDBSCAN in testH2O folder 
 
 # Authors
  - Abdulrahman Allouche (Lyon 1 University)
