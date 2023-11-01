@@ -13,7 +13,8 @@ This repository provides several script (python + bash) to reduce the database o
 ## Clustering.py
  Search list of selected structures based on KMeans, DBSCAN or HDBSCAN clustering method.
  - Input  file : functions.h5 (default), required. You can used --infile=otherfile to change the name of input file
- - Outut  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
+ - Output  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
+ - Second output file : clusters.csv (default). Set --outclustersfile=othername.csv to change it. This file contains strcutures number, Z and clusters number.
  - The default clustering approach is KMeans. You can change it using --method=DBSCAN or --method=HDBSCAN
  - The default minsample hperparameter is 2. You can change it by --minsample=OtherValue
  - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Please note that for DBSCAN and HDBSCAN, all outliers structures are selected.
@@ -33,12 +34,19 @@ This repository provides several script (python + bash) to reduce the database o
  - The number of dimensions after reduction is 1. To change it, use --k=value, where value represents the number of dimensions for t-SNE (from 1 to 3) or PCA. For PCA, k can be a real number between 0 and 1.0. In this case, the number of dimensions is computed automatically based on the amount of variance that needs to be explained, which is greater than the percentage specified by n_components (see scikit-learn documentation)
  - The percentage used to select number of grid points is set to 0.20%. To change it : --p=newValue.  the number of grid points m = int((number of dataset/100*percentage)**(1.0/n_components). If p<0 : m=int(-p) for each direction
 
+## buildListFromClustersFile.py
+ build a numStructs.csv using clusters.data produced by Clustering.py. 
+ - Input  file : Clustering.py (default), required. You can used --infile=otherfile to change the name of input file
+ - Outut  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
+ - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue
+ - The seed=111 by default. You can change it by : --seed=OtherInteger
+
 ## buildSelectedData.py
  build a selInput.data file using input.data (the database for nnp-train) and  numStructs.csv
  - Input  file : input.data (default), required. You can used --infile=otherfile to change the name of input file
  - Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile
  - Outut  file : selInput.data (default). You can use --outfile=otherfile to change the name of output file
-
+   
 ## Build the reduced data
 To reduce the database, you have to run, in this order :
 ```
