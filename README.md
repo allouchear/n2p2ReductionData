@@ -4,6 +4,7 @@ n2p2ReductionData - some scripts to reduce structure database using several mach
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 This repository provides several script (python + bash) to reduce the database of structures used to train NN network potential with n2p2 package.
+Requirement : n2p2 package and scikit-learn library.
 
 ## buildGh5.py
  build a .h5 file using function.data contenning G function produced by nnp-scaling program of n2p2 
@@ -76,7 +77,7 @@ To reduce the database, you have to run, in this order :
 ```
 python buildGh5.py
 python Clustering.py
-#  and probably buildListFromClustersFile.py
+#  and probably python buildListFromClustersFile.py
 python buildSelectedData.py
 ```
 Or
@@ -89,7 +90,7 @@ Or
 ```
 python buildGh5.py
 python KDE.py
-SelectionByKDE.py
+python SelectionByKDE.py
 python buildSelectedData.py
 ```
 As an example, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid, xAllKDE and xAllHDBSCAN in testH2O folder 
