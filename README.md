@@ -62,7 +62,6 @@ build a numStructs.csv using  resultsKDE.csv produced by KDE.py.
  - Input  file :  numStructs.csv (default), required. You can used --numfile=othernumfile to change the name of numfile
  - The selection method can be  Regular, Logarithmic, Smallest KDE. Use --method=yourmethod to set it
  - The percentage of selected structures by cluster is set to 10.0%. To change it : --p=newValue
- - The seed=111 by default. You can change it by : --seed=OtherInteger
 
 ## buildSelectedData.py
  build a selInput.data file using input.data (the database for nnp-train) and  numStructs.csv
