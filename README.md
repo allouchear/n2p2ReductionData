@@ -96,7 +96,7 @@ As examples, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid, xAllKDE and xAllHDBSCAN 
 
 ## metrics.py
  build several metrcis (min, max, mean, Chi2, ....) of severl .h5 data files.
- - Input files : funct*h5 (default), list of files .h5 to read, containing G values fro several database. You can change it by : --infiles=list of files. Exemple : --infiles=file1.h5,file2.h5,fileT*.h5
+ - Input files : funct\*h5 (default), list of files .h5 to read, containing G values fro several database. You can change it by : --infiles=list of files. Exemple : --infiles=file1.h5,file2.h5,fileT\*.h5
  - Output files : metrics (default), required. You can used --outfile=otherprefix. outfile is used as prefix of outfiles : one .h file for all Z and one .csv for each Z, datasorted by Chi2, ...
  - bins  :  default 100. To change it, --bins =newNumberOfBins
  
