@@ -11,7 +11,7 @@ def getArguments():
 	parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
 	parser.add_argument("--outfile", type=str, default="metrics", help="prefix of outfiles : one .h file for all Z and one .csv for each Z")
 	parser.add_argument("--bins", type=int, default=100, help=" bins = number of bins to build the histograme (100 = default)")
-	parser.add_argument("--infiles", type=str, default="funct*h5", help="inputfile : example func*h5")
+	parser.add_argument("--infiles", type=str, default="funct*h5", help="--infiles=list of file. Example --infiles=func*h5,a.h5")
 
 	args = parser.parse_args()
 
