@@ -16,9 +16,9 @@ Requirement : n2p2 package and scikit-learn library.
  - Input  file : functions.h5 (default), required. You can used --infile=otherfile to change the name of input file
  - Output  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
  - Second output file : clusters.csv (default). Set --outclustersfile=othername.csv to change it. This file contains strcutures number, Z and clusters number.
- - The default clustering approach is KMeans. You can change it using --method=DBSCAN or --method=HDBSCAN
+ - The default clustering approach is KMeans. You can change it using --method=DBSCAN, --method=HDBSCAN or --method=None (1 cluster by z : all data for one z are in one cluster)
  - The default minsample hperparameter is 2. You can change it by --minsample=OtherValue
- - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Please note that for DBSCAN and HDBSCAN, all outliers structures are selected.
+ - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Please note that for DBSCAN and HDBSCAN, all outliers structures are selected. If newValue<0, int(-newValue) rows are selected by z (no %)
  - The optimal value of eps hyperparameter of DBSCAN is computed using NearestNeighbors+Knee method. You can change it using --eps=FixedPositiveValue
  - By default no reduction of dimension. If needed, add: --reddim=PCA
  - To define the dimension after reduction, set kr. --kr=integer or a real real between 0 and 1.0 (see scikit-learn documentaion for PCA)
@@ -54,7 +54,7 @@ Requirement : n2p2 package and scikit-learn library.
  build a numStructs.csv using clusters.csv produced by Clustering.py. 
  - Input  file : clusters.csv (default), required. You can used --infile=otherfile to change the name of input file
  - Outut  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
- - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue
+ - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue.  If newValue<0, int(-newValue) rows are selected by z (no %)
  - The seed=111 by default. You can change it by : --seed=OtherInteger
 
 ## SelectionByKDE.py
