@@ -23,7 +23,7 @@ def getArguments():
 	parser.add_argument("--infile", type=str, default="functions.h5", help="G functions from h5 file, see buildGh5.py")
 	parser.add_argument("--outfile", type=str, default="numStructs.csv", help="output file : list of selected structures")
 	parser.add_argument("--outclustersfile", type=str, default="clusters.csv", help="output file containing strcutures number, Z and clusters number")
-	parser.add_argument("--method", type=str, default="KMeans", help="method : KMeans, DBSCAN or HDBSCAN")
+	parser.add_argument("--method", type=str, default="KMeans", help="method : KMeans, DBSCAN, HDBSCAN or None")
 	parser.add_argument("--k", type=int, default=5, help=" k = number of clusters (5 = default)")
 	parser.add_argument("--p", type=float, default=0.20, help=" real : % of selected structures by cluster, default=0.20")
 	parser.add_argument("--seed", type=int, default=111, help=" seed, default 111. If <0 => random_state=None")
@@ -216,8 +216,17 @@ def DBSCANClustering(store,args):
 		for i in range(imin,k):
 			indexes = df.index[df['predicted_cluster'] == i].tolist()
 			indexes = list(set(indexes))
-			n = max( [int( len(indexes) * (percentage/100.0) ), 1])
-			sample.extend(random.sample(indexes, n))
+			if percentage>0:
+				n = max( [int( len(indexes) * (percentage/100.0) ), 1])
+			else:
+				n=int(-percentage)
+			if n<1 :
+				n=1
+			if n>len(indexes):
+				n=len(indexes)
+			if len(indexes)>=n:
+				print("Number of selected structures for this z = ", n,flush=True)
+				sample.extend(random.sample(indexes, n))
 
 	#print(len(sample))
 	sample = set(sample)
@@ -257,12 +266,67 @@ def KMeansClustering(store,args):
 		for i in range(k):
 			indexes = df.index[df['predicted_cluster'] == i].tolist()
 			indexes = list(set(indexes))
+			if percentage>0:
+				n = max( [int( len(indexes) * (percentage/100.0) ), 1])
+			else:
+				n=int(-percentage)
+			if n<1 :
+				n=1
+			if n>len(indexes):
+				n=len(indexes)
+			if len(indexes)>=n:
+				print("Number of selected structures for this z = ", n,flush=True)
+				sample.extend(random.sample(indexes, n))
+	#print(len(sample))
+	sample = set(sample)
+	sample = sorted(sample)
+	return sample, dfClusters
+
+def NoClustering(store,args):
+	percentage = args.p
+	seed = args.seed
+	k = args.k
+	if seed<0:
+		seed=None
+	sample = []
+	random.seed(seed)
+	print("Types = ",store.keys())
+	dfClusters=None
+	for i, key in enumerate(store.keys()):
+		df = store.get(key)
+		z=int(df.iloc[0,0])
+		print("-------------------------------------------------------------------------",flush=True)
+		print("Without Clusterning of data for atomic number Z = ",z,flush=True)
+		print("=====================================================",flush=True)
+		df = reduceData(df, args)
+		print("DataFrame shape = ",df.shape, flush=True)
+		print("Number of variables = ",df.shape[1]-1, flush=True)
+
+		df["predicted_cluster"] = i
+		dfc=df[["Z","predicted_cluster"]]
+		if dfClusters is None:
+			dfClusters=dfc
+		else:
+			dfClusters=pd.concat([dfClusters,dfc])
+
+		indexes = df.index.tolist()
+		indexes = list(set(indexes))
+		if percentage>0:
 			n = max( [int( len(indexes) * (percentage/100.0) ), 1])
+		else:
+			n=int(-percentage)
+		if n<1 :
+			n=1
+		if n>len(indexes):
+			n=len(indexes)
+		if len(indexes)>=n:
+			print("Number of selected structures for this z = ", n,flush=True)
 			sample.extend(random.sample(indexes, n))
 	#print(len(sample))
 	sample = set(sample)
 	sample = sorted(sample)
 	return sample, dfClusters
+
 
 args = getArguments()
 method=args.method
@@ -274,8 +338,11 @@ dfClusters=None
 # printStore(store)
 if method.upper()=="KMEANS":
 	sample, dfClusters = KMeansClustering(store,args)
-if method.upper()=="DBSCAN" or  method.upper()=="HDBSCAN" :
+elif method.upper()=="DBSCAN" or  method.upper()=="HDBSCAN" :
 	sample, dfClusters = DBSCANClustering(store,args)
+elif method.upper()=="NONE" :
+	sample, dfClusters = NoClustering(store,args)
+	
 store.close()
 
 print("# of selected structures = ",len(sample))

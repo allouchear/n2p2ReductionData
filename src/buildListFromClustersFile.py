@@ -38,8 +38,17 @@ def buildList(dfClusters,args):
 			indexes = df.index[df['predicted_cluster'] == i].tolist()
 			#print(indexes)
 			indexes = list(set(indexes))
-			n = max( [int( len(indexes) * (args.p/100.0) ), 1])
-			sample.extend(random.sample(indexes, n))
+			if args.p>0:
+				n = max( [int( len(indexes) * (args.p/100.0) ), 1])
+			else:
+				n=int(-args.p)
+			if n<1 :
+				n=1
+			if n>len(indexes):
+				n=len(indexes)
+			if len(indexes)>=n:
+				print("Number of selected structures for this z = ", n,flush=True)
+				sample.extend(random.sample(indexes, n))
 
 	#print(len(sample))
 	sample = set(sample)
