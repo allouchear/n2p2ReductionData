@@ -1,0 +1,9 @@
+#!/bin/bash
+source /home/theochem/allouche/shell/tensorFlowEnv
+SCRIPT=$(readlink -f $0)
+export  myDIR=`dirname $SCRIPT`
+python $myDIR/metrics.py $@
+
+# --outfile", type=str, default="metrics.csv", help="output file : metrcis as a dataframe in csv format
+# --bins", type=int, default=100, help=" bins = number of bins to build the histograme (100 = default)
+
