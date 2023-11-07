@@ -6,4 +6,6 @@
 #../src/xMetrics --bins=100 --outfile="metrics.h5" --infiles=fun*h5
 #../src/xMetrics --bins=100 --outfile="metrics.h5" --infiles=functions.h5,functions2.h5
 #../src/xMetrics --bins=100 --outfile="metrics" --infiles=a*.h5,function_Smallest2037.h5
-../src/xMetrics --bins=100 --outfile="metrics" --infiles=func*.h5
+#../src/xMetrics --bins=100 --outfile="metrics" --infiles=func*.h5 --p=-100
+#../src/xMetrics --bins=100 --outfile="metrics" --infiles=func*.h5 
+../src/xMetrics --bins=100 --outfile="metrics" --infiles=func*.h5,G.h5 --p=-2
