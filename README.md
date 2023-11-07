@@ -99,7 +99,7 @@ As examples, see xAllKMeans, xAllDBSCAN, xAllSelOnGrid, xAllKDE and xAllHDBSCAN 
  - Input files : funct\*h5 (default), list of files .h5 to read, containing G values fro several database. You can change it by : --infiles=list of files. Exemple : --infiles=file1.h5,file2.h5,fileT\*.h5
  - Output files : metrics (default), required. You can used --outfile=otherprefix. outfile is used as prefix of outfiles : one .h file for all Z and one .csv for each Z, datasorted by Chi2, ...
  - bins  :  default 100. To change it, --bins =newNumberOfBins
- 
+ - To compute the Chi2 on N dimensions (N=number of G), we build a histogram with nbins = int(-p) for each dimension if p<10 (default -10). If p>0 total number of bins  = int(total number of G*p/100)
 # Authors
  - Abdulrahman Allouche (Lyon 1 University)
 
