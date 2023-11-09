@@ -6,7 +6,7 @@
 
 # You can run it many times. See xClustering to change clusters number
 rm numStructs.csv
-time ../src/xSelectionOnGrid
+time ../src/xSelectionOnGrid --method=PCA --k=0.9 --scaling=None --p=-4
 # build new input.data file, named selInput.data
 rm selInput.data
 ../src/xbuildSelectedData
