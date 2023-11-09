@@ -68,20 +68,27 @@ def getOptimialEpsDBSCAN(df, args):
 def makePipeLineScalerRed(args, n_components):
 	scaler = None
 	if args.scaling.upper()=="STANDARD":
+		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
 		scaler = StandardScaler()
 	elif args.scaling.upper()=="MINMAX":
+		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
 		scaler = MinMaxScaler()
 	elif args.scaling.upper()=="MAXABS":
+		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
 		scaler = MaxAbsScaler()
 	else:
+		print("No scaling for data.",flush=True)
 		scaler = None
 	reddim = None
 	if args.kr< n_components and args.reddim.upper()!="NONE":
 		n_components=args.kr
 		if abs(n_components-1)<1e-10:
 			n_components=1
+		if n_components>=1:
+			n_components=int(n_components)
 		print("n_comps = ", n_components)
 		if args.reddim.upper()=="PCA":
+			print("Dimensions reduced using ", args.method.upper(), " method.",flush=True)
 			reddim = PCA(n_components=n_components)
 		else:
 			reddim = None
@@ -224,8 +231,10 @@ def DBSCANClustering(store,args):
 				n=1
 			if n>len(indexes):
 				n=len(indexes)
+			if i<0:
+				n=len(indexes)
 			if len(indexes)>=n:
-				print("Number of selected structures for this z = ", n,flush=True)
+				print("Number of selected structures from cluster {:3d}  for this z = {:3d} ".format(i, n),flush=True)
 				sample.extend(random.sample(indexes, n))
 
 	#print(len(sample))
@@ -263,6 +272,7 @@ def KMeansClustering(store,args):
 		else:
 			dfClusters=pd.concat([dfClusters,dfc])
 
+		print("Number of clusters = ", k)
 		for i in range(k):
 			indexes = df.index[df['predicted_cluster'] == i].tolist()
 			indexes = list(set(indexes))
@@ -275,7 +285,7 @@ def KMeansClustering(store,args):
 			if n>len(indexes):
 				n=len(indexes)
 			if len(indexes)>=n:
-				print("Number of selected structures for this z = ", n,flush=True)
+				print("Number of selected structures from cluster {:3d}  for this z = {:3d} ".format(i, n),flush=True)
 				sample.extend(random.sample(indexes, n))
 	#print(len(sample))
 	sample = set(sample)
@@ -320,7 +330,7 @@ def NoClustering(store,args):
 		if n>len(indexes):
 			n=len(indexes)
 		if len(indexes)>=n:
-			print("Number of selected structures for this z = ", n,flush=True)
+			print("Number of selected structures from this cluster, for this z = ", n,flush=True)
 			sample.extend(random.sample(indexes, n))
 	#print(len(sample))
 	sample = set(sample)
