@@ -78,6 +78,8 @@ def makeSelection(store,args):
 		n_components = ndf.shape[1]
 		if args.k< n_components and args.method.upper()!="NONE":
 			n_components=args.k
+			if n_components>=1:
+				n_components=int(n_components)
 			if args.method.upper()=="PCA":
 				print("Dimensions reduced using ", args.method.upper(), " method.",flush=True)
 				model = PCA(n_components=n_components)
