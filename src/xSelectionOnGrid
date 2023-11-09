@@ -2,11 +2,5 @@
 source /home/theochem/allouche/shell/tensorFlowEnv
 SCRIPT=$(readlink -f $0)
 export  myDIR=`dirname $SCRIPT`
-#python $myDIR/SelectionOnGrid.py --method=PCA --k=1 --seed=1 --scaling=None --p=5.0
-#python $myDIR/SelectionOnGrid.py --method=TSNE --k=1 --seed=1 --scaling=None --p=4.0
-#python $myDIR/SelectionOnGrid.py --method=TSNE --k=2 --seed=1 --scaling=None --p=2.0
-#python $myDIR/SelectionOnGrid.py --method=PCA --k=4 --seed=1 --scaling=None --p=10.0
-#python $myDIR/SelectionOnGrid.py --method=TSNE --k=3 --seed=1 --scaling=None --p=10.0
-python $myDIR/SelectionOnGrid.py --method=None --scaling=None --p=-2
-#python $myDIR/SelectionOnGrid.py --method=PCA --k=0.999 --seed=1 --scaling=None --p=0.1
-#python $myDIR/SelectionOnGrid.py --method=PCA --k=0.999 --seed=1 --scaling=Standard --p=-5
+#python $myDIR/SelectionOnGrid.py --method=None --scaling=None --p=-2
+python $myDIR/SelectionOnGrid.py $@

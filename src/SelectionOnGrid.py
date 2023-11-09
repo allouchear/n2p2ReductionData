@@ -21,7 +21,7 @@ def getArguments():
 	parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
 	parser.add_argument("--infile", type=str, default="functions.h5", help="G functions from h5 file, see buildGh5.py")
 	parser.add_argument("--outfile", type=str, default="numStructs.csv", help="output file : list of selected structures")
-	parser.add_argument("--method", type=str, default="PCA", help="method : PCA, or TSNE")
+	parser.add_argument("--method", type=str, default="PCA", help="method : PCA, TSNE, or None (no reduction)")
 	parser.add_argument("--scaling", type=str, default="None", help="scaling : None, MinMax, Standard or MinAbs")
 	parser.add_argument("--k", type=float, default=1, help=" k = number of reduced dimension for TSNE(from 1 to 3) or PCA. For PCA, k can be a real between 0 and 1.0")
 	parser.add_argument("--p", type=float, default=0.20, help=" real : % of selected structures by cluster, default=0.20. If p<0 : m=int(-p) for each direction")
@@ -40,12 +40,16 @@ def printStore(store):
 def scaleX(df, args):
 	df=df.drop(columns=['Z'])
 	if args.scaling.upper()=="STANDARD":
+		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
 		scaler = StandardScaler()
 	elif args.scaling.upper()=="MINMAX":
-		scaler = StandardMinMax()
+		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
+		scaler = MinMaxScaler()
 	elif args.scaling.upper()=="MINABS":
-		scaler = StandardMinMax()
+		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
+		scaler = MaxAbsScaler()
 	else:
+		print("No scaling for data.",flush=True)
 		return df,None
 	scaler.fit(df)
 	df =scaler.transform(df)
@@ -75,10 +79,12 @@ def makeSelection(store,args):
 		if args.k< n_components and args.method.upper()!="NONE":
 			n_components=args.k
 			if args.method.upper()=="PCA":
+				print("Dimensions reduced using ", args.method.upper(), " method.",flush=True)
 				model = PCA(n_components=n_components)
 				ndf = model.fit_transform(ndf)
 				n_components=model.n_components_
 			elif args.method.upper()=="TSNE":
+				print("Dimensions reduced using ", args.method.upper(), " method.",flush=True)
 				n_components=int(n_components)
 				if n_components>3 or n_components<1:
 					print("Error, k must be between 1 and 3 for TSNE")
@@ -86,6 +92,7 @@ def makeSelection(store,args):
 				model = TSNE(n_components=n_components)
 				ndf = model.fit_transform(ndf)
 		else:
+			print("No reduction of dimensions.",flush=True)
 			ndf = ndf.to_numpy(dtype='float32')
 
 		nAll=ndf.shape[0]
@@ -100,7 +107,7 @@ def makeSelection(store,args):
 			mall = m**n_components
 			print("histogram size=",mall)
 		cols=[]
-		print("n_components =",n_components)
+		print("Number of components =",n_components)
 		#print("ndf")
 		#print(ndf)
 		for ic in range(n_components):
@@ -109,7 +116,7 @@ def makeSelection(store,args):
 			df[xColName] = ndf[:,ic]
 			xmin=df[xColName].min()
 			xmax=df[xColName].max()
-			print("ic= {:0.12e} xmin= {:0.12e} xmax = {:0.12e}".format(ic,xmin,xmax))
+			print("Component number = {:5d} xmin= {:0.12e} xmax = {:0.12e}".format(ic,xmin,xmax))
 			dx = (xmax-xmin)/m;
 			if abs(dx)>1e-14:
 				kAll = (df[xColName]-xmin)/dx;
