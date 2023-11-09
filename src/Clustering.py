@@ -88,7 +88,7 @@ def makePipeLineScalerRed(args, n_components):
 			n_components=int(n_components)
 		print("n_comps = ", n_components)
 		if args.reddim.upper()=="PCA":
-			print("Dimensions reduced using ", args.method.upper(), " method.",flush=True)
+			print("Dimensions reduced using ", args.reddim.upper(), " method.",flush=True)
 			reddim = PCA(n_components=n_components)
 		else:
 			reddim = None
