@@ -25,6 +25,7 @@ def getArguments():
 	parser.add_argument("--scaling", type=str, default="None", help="scaling : None, MinMax, Standard or MinAbs")
 	parser.add_argument("--k", type=float, default=1, help=" k = number of reduced dimension for TSNE(from 1 to 3) or PCA. For PCA, k can be a real between 0 and 1.0")
 	parser.add_argument("--p", type=float, default=0.20, help=" real : % of selected structures by cluster, default=0.20. If p<0 : m=int(-p) for each direction")
+	parser.add_argument("--minmax", type=int, default=0, help=" 0(Default)=> select random one value by grird, 1=> select on value by grid, that near xmin or xmax")
 	parser.add_argument("--seed", type=int, default=111, help=" seed, default 111. If <0 => random_state=None")
 	args = parser.parse_args()
 	return args
@@ -100,6 +101,8 @@ def makeSelection(store,args):
 		nAll=ndf.shape[0]
 		if percentage>0:
 			m = int((nAll/100*percentage)**(1.0/n_components))
+			if m< 1:
+				m=1
 			print("histogram size for one variable=",m)
 			mall = m**n_components
 			print("histogram size=",mall)
@@ -112,15 +115,27 @@ def makeSelection(store,args):
 		print("Number of components =",n_components)
 		#print("ndf")
 		#print(ndf)
+		dcols=[]
 		for ic in range(n_components):
 			xColName="X"+str(ic)
 			kColName="K"+str(ic)
+			if args.minmax==1:
+				DColName="R"+str(ic)
+				dcols.append(DColName)
+
 			df[xColName] = ndf[:,ic]
 			xmin=df[xColName].min()
 			xmax=df[xColName].max()
 			print("Component number = {:5d} xmin= {:0.12e} xmax = {:0.12e}".format(ic,xmin,xmax))
 			dx = (xmax-xmin)/m;
 			if abs(dx)>1e-14:
+				if args.minmax==1:
+					Dmin = np.abs(df[xColName]-xmin)
+					Dmax = np.abs(df[xColName]-xmax)
+					dfminmax=pd.concat([Dmin, Dmax],axis=1)
+					Dmin = dfminmax.min(axis=1)
+					df[DColName] = Dmin
+					
 				kAll = (df[xColName]-xmin)/dx;
 				df[kColName] = kAll
 				df[kColName] = df[kColName].astype('int')
@@ -129,7 +144,23 @@ def makeSelection(store,args):
 				#print(df[df[kColName]>=m])
 
 		#print("remove duplicated ")
-		df = df.drop_duplicates(subset=cols, keep='first') 
+		if args.minmax==1:
+			df=df.sort_values(dcols,ascending=True).groupby(cols).head(1)
+			'''
+			# this for one Z. Other structues  can be selected from other Z
+			dfAll = store.get(key)
+			colsG=dfAll.columns
+			dfComp=pd.concat([dfAll.min(axis=0),df[colsG].min(axis=0),dfAll.max(axis=0),df[colsG].max(axis=0)],axis=1)
+			dfComp.rename(columns={0: "minAll", 1: "minSel", 2:"maxAll", 3:"maxSel"},inplace=True)
+			dfComp['RAll']=dfComp["maxAll"]-dfComp["minAll"]
+			dfComp['RSel']=dfComp["maxSel"]-dfComp["minSel"]
+			dfComp['dR']=dfComp['RAll']-dfComp['RSel']
+			dfComp['dR(%)']=dfComp['dR']/dfComp['RAll']*100
+			dfComp.dropna(inplace=True)
+			print(dfComp)
+			'''
+		else:
+			df = df.drop_duplicates(subset=cols, keep='first') 
 		#print("len after = ", len( df.index.to_list()))
 		#print("df after = ",  df)
 		indexes = df.index.to_list()
