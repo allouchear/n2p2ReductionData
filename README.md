@@ -34,6 +34,7 @@ Requirement : n2p2 package and scikit-learn library.
  - The default method to make a reduction of dimensions is PCA. You can change it using --method=TSNE or --method=None (without reduction)
  - By default no scaling on G. You can change it by --scaling=Standard, --scaling=MinMax, --scaling=AbsMax, or --scaling=None (default)
  - The number of dimensions after reduction is 1. To change it, use --k=value, where value represents the number of dimensions for t-SNE (from 1 to 3) or PCA. For PCA, k can be a real number between 0 and 1.0. In this case, the number of dimensions is computed automatically based on the amount of variance that needs to be explained, which is greater than the percentage specified by n_components (see scikit-learn documentation)
+ - By default we select randomly one structure from one grid. Other option  --minmax=1 => select from one grid the nearest structure to box borders
  - The percentage used to select number of grid points is set to 0.20%. To change it : --p=newValue.  the number of grid points m = int((number of dataset/100*percentage)**(1.0/n_components). If p<0 : m=int(-p) for each direction
 
 ## KDE.py
