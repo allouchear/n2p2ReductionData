@@ -17,6 +17,7 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import MaxAbsScaler
 from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
+from joblib import cpu_count
 
 def getArguments():
 	parser = argparse.ArgumentParser(fromfile_prefix_chars='@')
@@ -45,25 +46,58 @@ def printStore(store):
 		print("Z=",z," Shape = ",dfz.shape)
 		print(dfz)
 
+def getMyKneedle(y):
+	x = np.arange(0, len(y))
+	x = x/x.max()
+	data = np.vstack([x, y])
+	#print(data)
+	p1 = data.T[0]
+	p2 = data.T[-1]
+	# we need the line passing by the first and the last point
+	p2mp1 = p2 - p1
+
+	# adding an extra dimension for broadcasting
+	p1 = np.expand_dims(p1, axis=1)
+	p2mp1 = np.expand_dims(p2mp1, axis=1)
+	diff = p1 - data
+	cross_prod = np.abs(np.cross(p2mp1, diff, axis=0))  # /norm(p2-p1) is useless in this context
+	knee_position = np.argmax(cross_prod)
+	knee = data[:, knee_position][1]
+	return knee, knee_position
+
+
 def getOptimialEpsDBSCAN(df, args):
 	eps=args.eps
 	minsample=args.minsample
 	if eps>0:
 		return eps
 	print("Get optimal eps for DBSCAN using NearestNeighbors+kneedle method....",flush=True)
-	df=df.drop(columns=['Z'])
-	neighbors = NearestNeighbors(n_neighbors=minsample)
+	#df=df.drop(columns=['Z'])
+	neighbors = NearestNeighbors(n_neighbors=minsample, n_jobs=cpu_count())
 	neighbors_fit = neighbors.fit(df)
+	#print("End fit",flush=True)
 	distances, indices = neighbors_fit.kneighbors(df)
 	distances = np.sort(distances, axis=0)
+	#print("End sort",flush=True)
 	distances = distances[:,1]
 	del neighbors
 	del neighbors_fit
-	#print(distances)
+	ldist =len(distances)
+	#print(distances,flush=True)
+	#print("len distances=", ldist,flush=True)
+	#print("type distances=", type(distances),flush=True)
+	eps, pos = getMyKneedle(distances)
+	#print("MyoptimalEps=",eps,flush=True)
+	#distances=distances[pos:-1]
+
+	distances=distances[distances>=eps/2]
+	#print("Len distances after reduction=",len(distances))
 	kneedle = KneeLocator(x = range(len(distances)), y = distances, S = 1.0, curve = "concave", direction = "increasing", online=True)
+	eps = kneedle.knee_y
+
 	# get the estimate of knee point
-	print("optimalEps=",kneedle.knee_y,flush=True)
-	return kneedle.knee_y
+	print("optimalEps=",eps,flush=True)
+	return eps
 
 def makePipeLineScalerRed(args, n_components):
 	scaler = None
@@ -197,12 +231,17 @@ def DBSCANClustering(store,args):
 			nc=int(df.shape[0]*e)
 			if nc<2 :
 				nc=2
-			print("min_cluster_size = ",nc)
-			dbscan = HDBSCAN(min_cluster_size=nc).fit(ndf)
+			print("min_cluster_size = ",nc,flush=True)
+			print("Begin HDBSCAN ...",flush=True)
+			dbscan = HDBSCAN(min_cluster_size=nc, n_jobs=cpu_count()).fit(ndf)
+			print("End HDBSCAN ",flush=True)
 		else:
-			e=getOptimialEpsDBSCAN(df,args) # 'Z' dropped in getOptimal
-			dbscan = DBSCAN(eps=e, min_samples=minsample).fit(ndf)
-		dbscan.fit(df)
+			e=getOptimialEpsDBSCAN(ndf,args)
+			print("Begin DBSCAN ...",flush=True)
+			dbscan = DBSCAN(eps=e, min_samples=minsample,n_jobs=cpu_count()).fit(ndf)
+			print("End DBSCAN ",flush=True)
+
+		#dbscan.fit(df)
 		df["predicted_cluster"] = dbscan.labels_
 
 		dfc=df[["Z","predicted_cluster"]]
@@ -220,6 +259,7 @@ def DBSCANClustering(store,args):
 		if km1>0:
 			imin=-1
 		
+		nAll = 0
 		for i in range(imin,k):
 			indexes = df.index[df['predicted_cluster'] == i].tolist()
 			indexes = list(set(indexes))
@@ -234,8 +274,10 @@ def DBSCANClustering(store,args):
 			if i<0:
 				n=len(indexes)
 			if len(indexes)>=n:
-				print("Number of selected structures from cluster {:3d}  for this z = {:3d} ".format(i, n),flush=True)
+				print("Number of selected structures from cluster {:3d}  for this z = {:3d} from {:5d}".format(i, n,len(indexes)),flush=True)
 				sample.extend(random.sample(indexes, n))
+				nAll += n
+		print("Total number of selected structures for this z = {:3d}".format(nAll),flush=True)
 
 	#print(len(sample))
 	sample = set(sample)
