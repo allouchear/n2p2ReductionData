@@ -25,7 +25,7 @@ def getArguments():
 	parser.add_argument("--scaling", type=str, default="None", help="scaling : None, MinMax, Standard or MinAbs")
 	parser.add_argument("--k", type=float, default=1, help=" k = number of reduced dimension for TSNE(from 1 to 3) or PCA. For PCA, k can be a real between 0 and 1.0")
 	parser.add_argument("--p", type=float, default=0.20, help=" real : % of selected structures by cluster, default=0.20. If p<0 : m=int(-p) for each direction")
-	parser.add_argument("--minmax", type=int, default=0, help=" 0(Default)=> select random one value by grird, 1=> select on value by grid, that near xmin or xmax")
+	parser.add_argument("--minmax", type=int, default=0, help=" 0(Default)=> select random one value by grird, 1=> select on value by grid, that near xmin or xmax, 2=> select on value by grid, that near xmin or xmax using normalized distance (x from xmin to xmax=>x from 0 to 1), 3=> same 2 but we use sum of min distances to select the structure")
 	parser.add_argument("--seed", type=int, default=111, help=" seed, default 111. If <0 => random_state=None")
 	args = parser.parse_args()
 	return args
@@ -119,7 +119,7 @@ def makeSelection(store,args):
 		for ic in range(n_components):
 			xColName="X"+str(ic)
 			kColName="K"+str(ic)
-			if args.minmax==1:
+			if args.minmax == 1 or args.minmax == 2 or args.minmax == 3:
 				DColName="R"+str(ic)
 				dcols.append(DColName)
 
@@ -129,9 +129,15 @@ def makeSelection(store,args):
 			print("Component number = {:5d} xmin= {:0.12e} xmax = {:0.12e}".format(ic,xmin,xmax))
 			dx = (xmax-xmin)/m;
 			if abs(dx)>1e-14:
-				if args.minmax==1:
+				if args.minmax == 1:
 					Dmin = np.abs(df[xColName]-xmin)
 					Dmax = np.abs(df[xColName]-xmax)
+					dfminmax=pd.concat([Dmin, Dmax],axis=1)
+					Dmin = dfminmax.min(axis=1)
+					df[DColName] = Dmin
+				if args.minmax == 2 or args.minmax == 3:
+					Dmin = np.abs((df[xColName]-xmin)/(xmax-xmin))
+					Dmax = np.abs((df[xColName]-xmax)/(xmax-xmin)-1)
 					dfminmax=pd.concat([Dmin, Dmax],axis=1)
 					Dmin = dfminmax.min(axis=1)
 					df[DColName] = Dmin
@@ -144,7 +150,10 @@ def makeSelection(store,args):
 				#print(df[df[kColName]>=m])
 
 		#print("remove duplicated ")
-		if args.minmax==1:
+		if args.minmax == 3 :
+			df["SumMin"]=df[dcols].sum(axis=1)
+			df=df.sort_values(["SumMin"],ascending=True).groupby(cols).head(1)
+		if args.minmax == 1 or  args.minmax == 2:
 			df=df.sort_values(dcols,ascending=True).groupby(cols).head(1)
 			'''
 			# this for one Z. Other structues  can be selected from other Z
