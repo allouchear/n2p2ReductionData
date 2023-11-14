@@ -17,6 +17,7 @@ Requirement : n2p2 package and scikit-learn library.
  - Output  file : numStructs.csv (default). You can used --outfile=otherfile to change the name of output file
  - Second output file : clusters.csv (default). Set --outclustersfile=othername.csv to change it. This file contains strcutures number, Z and clusters number.
  - The default clustering approach is KMeans. You can change it using --method=DBSCAN, --method=HDBSCAN or --method=None (1 cluster by z : all data for one z are in one cluster)
+ - The default number of clusters for KMeans = 5. To change it, use : --k=numberOfClusters
  - The default minsample hperparameter is 2. You can change it by --minsample=OtherValue
  - The percentage of selected structures by cluster is set to 0.20%. To change it : --p=newValue. Please note that for DBSCAN and HDBSCAN, all outliers structures are selected. If newValue<0, int(-newValue) rows are selected by z (no %)
  - The optimal value of eps hyperparameter of DBSCAN is computed using NearestNeighbors+Knee method. You can change it using --eps=FixedPositiveValue
