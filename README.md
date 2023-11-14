@@ -45,7 +45,7 @@ Requirement : n2p2 package and scikit-learn library.
  - By default we search max KDE using data in databasefile. If not, we used those given in maxfile : --maxfile=namecontainingmaxKDE
  - Outut  file : resultsKDE.csv (default). You can used --outfile=otherfile to change the name of output file
  -  By default no reduction of dimension. If needed, add: --reddim=PCA
- - To define the dimension after reduction, set kr. --kr=integer or a real real between 0 and 1.0 (see scikitlearn documentaion for PCA)
+ - To define the dimension after reduction, set k. --k=integer or a real real between 0 and 1.0 (see scikitlearn documentaion for PCA)
  - By defeault the data are not scaled. To do it, use : --scaling=MinMax, Standard or MaxAbs
  - The seed=111 by default. You can change it by : --seed=OtherInteger
  - scott is the default method for bandwidth in KDE. You can change it using --bw=othermethod (see KernelDensity documentation in scikit-learn)
