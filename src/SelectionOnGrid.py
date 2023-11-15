@@ -22,7 +22,7 @@ def getArguments():
 	parser.add_argument("--infile", type=str, default="functions.h5", help="G functions from h5 file, see buildGh5.py")
 	parser.add_argument("--outfile", type=str, default="numStructs.csv", help="output file : list of selected structures")
 	parser.add_argument("--method", type=str, default="PCA", help="method : PCA, TSNE, or None (no reduction)")
-	parser.add_argument("--scaling", type=str, default="None", help="scaling : None, MinMax, Standard or MinAbs")
+	parser.add_argument("--scaling", type=str, default="None", help="scaling : None, MinMax, Standard or MaxAbs")
 	parser.add_argument("--k", type=float, default=1, help=" k = number of reduced dimension for TSNE(from 1 to 3) or PCA. For PCA, k can be a real between 0 and 1.0")
 	parser.add_argument("--p", type=float, default=0.20, help=" real : % of selected structures by cluster, default=0.20. If p<0 : m=int(-p) for each direction")
 	parser.add_argument("--minmax", type=int, default=0, help=" 0(Default)=> select random one value by grird, 1=> select on value by grid, that near xmin or xmax, 2=> select on value by grid, that near xmin or xmax using normalized distance (x from xmin to xmax=>x from 0 to 1), 3=> same 2 but we use sum of min distances to select the structure")
@@ -46,7 +46,7 @@ def scaleX(df, args):
 	elif args.scaling.upper()=="MINMAX":
 		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
 		scaler = MinMaxScaler()
-	elif args.scaling.upper()=="MINABS":
+	elif args.scaling.upper()=="MAXABS":
 		print("Data scaled using ", args.scaling.upper(), " method.",flush=True)
 		scaler = MaxAbsScaler()
 	else:
